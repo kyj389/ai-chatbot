@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#0046FF"       # 신한 블루
+backgroundColor = "#FFFFFF"    # 기본 흰 배경
+secondaryBackgroundColor = "#EAF0FF"  # 연한 파랑 (채팅박스 배경 등)
+textColor = "#333333"          # 어두운 회색 (가독성 높은 본문)
+font = "sans serif"            # 깔끔한 기본 폰트
