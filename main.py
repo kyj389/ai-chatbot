@@ -1,6 +1,8 @@
 import streamlit as st
 from openai import OpenAI, APIConnectionError, RateLimitError, OpenAIError
 from ui import render_header
+from chroma2 import Chroma2
+import time
 
 # UI
 st.set_page_config(page_title="신한 ICT 사업정보 Q&A 챗봇", layout="centered")
@@ -8,13 +10,16 @@ render_header()
 st.divider()
 
 # GPT 설정
-openai_api_key = st.secrets["OPENAI_API_KEY"]  # streamlit/.streamlit/secrets.toml 파일에 정의된 OPENAI_API_KEY 활용
-client = OpenAI(api_key=openai_api_key) # OpenAI API 클라이언트 생성
-gpt_model="gpt-4o"
-gpt_content = (
-    "당신은 신한금융그룹의 ICT 사업정보를 분석해주는 전문 챗봇입니다. "
-    "사용자의 질문에 공시자료 기반으로 사실에 근거한 정보를 명확하고 친절하게 제공합니다."
-)
+# openai_api_key = st.secrets["OPENAI_API_KEY"]  # streamlit/.streamlit/secrets.toml 파일에 정의된 OPENAI_API_KEY 활용
+# client = OpenAI(api_key=openai_api_key) # OpenAI API 클라이언트 생성
+# gpt_model="gpt-4o-mini"
+# gpt_content = (
+#     "당신은 신한금융그룹의 ICT 사업정보를 분석해주는 전문 챗봇입니다. "
+#     "사용자 질문에 대해 입력된 공시자료를 기반으로 사실에 근거한 정보를 명확하고 친절하게 제공합니다."
+# )
+
+langchain = Chroma2.create_langchain()
+# print(f"langchain :{langchain}")
 
 # 예시 질문 버튼
 col1, col2, col3 = st.columns(3)
@@ -95,14 +100,32 @@ if user_input:
     # GPT 응답 시도
     try:
         with st.spinner("답변을 생성 중입니다... 잠시만 기다려주세요."):
-            completion = client.chat.completions.create( # OpenAI API 클라이언트를 사용하여 챗봇 응답 생성
-                model=gpt_model,
-                messages=[
-                    {"role": "system", "content": gpt_content},
-                    {"role": "user", "content": user_input}
-                ],
-            )
-            bot_response = completion.choices[0].message.content.strip()            
+            start_time = time.time()
+            # 기본 응답
+            # completion = client.chat.completions.create( # OpenAI API 클라이언트를 사용하여 챗봇 응답 생성
+            #     model=gpt_model,
+            #     messages=[
+            #         {"role": "system", "content": gpt_content},
+            #         {"role": "user", "content": user_input}
+            #     ],
+            # )
+            # bot_response = completion.choices[0].message.content.strip()            
+
+            # langchain 사용
+            print("user_input :" + user_input)
+            result = langchain(user_input)
+            
+            if 0 < len(result["source_documents"]):
+                source_doc = "\n\n참고 문서: " + str(result["source_documents"][0].metadata['source'])
+            else:
+                source_doc = ""
+
+            bot_response = result["result"] + source_doc
+            # print(f"result : {result}")
+            
+            elapsed = time.time() - start_time
+            print(f"⏱️ 질의응답 수행 : {elapsed:.4f}초")
+
 
         # GPT 응답 표시
         with st.chat_message("ai"): # 챗봇 메시지 컨테이너 생성
