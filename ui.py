@@ -1,4 +1,6 @@
 import streamlit as st
+
+
 import pandas as pd
 from datetime import datetime
 import io
@@ -20,6 +22,14 @@ def render_header():
     with col_left:
         st.markdown(
             """
+            <style>
+            @media screen and (max-width: 640px) {
+                .st-emotion-cache-1mhbupt {
+                    min-width: 48px;
+                    flex: 0 1 calc(10% - 1rem);
+                    margin-bottom: -20px;
+                }
+            </style>
             <div style="display: flex; align-items: center; gap: 16px; padding: 10px 0;">
                 <img src="https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
                     alt="챗봇 아이콘" style="width: 48px; height: 48px;" />
