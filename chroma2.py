@@ -83,12 +83,12 @@ def load_chroma_db():
 
 class Chroma2:
 
-    def create_langchain():
+    def create_langchain(dir_path):
         
         start_time = time.time()
 
         # print(f"OPENAI_API_KEY={os.environ["OPENAI_API_KEY"]}")
-        dir_path = "./Documents"
+        
 
         # 최초 1회만 임베딩 및 벡터스토어 초기화
         if "vectordb" not in st.session_state:
@@ -146,7 +146,7 @@ class Chroma2:
 # 8. 질의
 # query = "신한은행의 최근 신사업은?"
 # query = "베트남은행 사업 입찰 자격에 대해서 알려줘"
-# langchain = Chroma2.create_langchain()
+# langchain = Chroma2.create_langchain("./Documents")
 # result = langchain(query)
 
 # print("\n📌 답변:")

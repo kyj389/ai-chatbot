@@ -6,7 +6,7 @@ from ui import render_header
 
 
 # langchain 추가
-# langchain = Chroma2.create_langchain()
+# langchain = Chroma2.create_langchain("./docs")
 
 
 def show_tab1():

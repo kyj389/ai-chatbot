@@ -90,7 +90,6 @@ langchain-core-community
 langchain-core-openai
 langchain-core-community-openai
 pymupdf
-python-docx
 openpyxl 
 python-pptx
 tiktoken
