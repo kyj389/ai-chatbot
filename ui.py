@@ -16,6 +16,18 @@ def render_header():
     if "show_inquiry_form" not in st.session_state:
         st.session_state["show_inquiry_form"] = False
 
+    # mobile media query 추가
+    st.markdown("""
+        <style>
+        @media screen and (max-width: 640px) {
+            .st-emotion-cache-1mhbupt {
+                min-width: 48px;
+                flex: 0 1 calc(10% - 1rem);
+                margin-bottom: -20px;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+    
     # 좌측 헤더 / 우측 버튼 레이아웃
     col_left, col_download, col_inquiry = st.columns([8, 1, 1])
     
